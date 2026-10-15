@@ -1,0 +1,496 @@
+``html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelGo - Travel Booking Platform</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f6fc;
+            color: #222;
+        }
+
+        header {
+            background: #0755c9;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav {
+            background: #063b8c;
+            padding: 12px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 12px;
+            font-weight: bold;
+        }
+
+        .hero {
+            background: linear-gradient(120deg, #0875e1, #00bcd4);
+            color: white;
+            text-align: center;
+            padding: 45px 15px;
+        }
+
+        .hero h2 {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 25px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            margin-bottom: 22px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #00000015;
+        }
+
+        h2 {
+            color: #0755c9;
+            margin-bottom: 18px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        button {
+            background: #0755c9;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        button:hover {
+            background: #003b91;
+        }
+
+        .result {
+            background: #edf5ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .result button {
+            margin-left: 8px;
+        }
+
+        footer {
+            background: #063b8c;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 600px) {
+            nav a {
+                display: inline-block;
+                margin: 7px;
+            }
+
+            .hero h2 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>✈ TravelGo</h1>
+    <p>Your Journey, Our Responsibility</p>
+</header>
+
+<nav>
+    <a href="#home">Home</a>
+    <a href="#login">Login</a>
+    <a href="#flights">Flights</a>
+    <a href="#hotels">Hotels</a>
+    <a href="#cabs">Cabs</a>
+    <a href="#itinerary">My Trips</a>
+</nav>
+
+<section class="hero" id="home">
+    <h2>Explore the World with TravelGo</h2>
+    <p>Book flights, hotels and cabs in one place.</p>
+</section>
+
+<div class="container">
+
+    <!-- LOGIN AND REGISTER -->
+    <section class="card" id="login">
+        <h2>User Login / Register</h2>
+
+        <form id="loginForm">
+            <div class="form-grid">
+                <div>
+                    <label>Name</label>
+                    <input type="text" id="username"
+                           placeholder="Enter your name" required>
+                </div>
+
+                <div>
+                    <label>Email</label>
+                    <input type="email" id="email"
+                           placeholder="Enter email" required>
+                </div>
+            </div>
+
+            <button type="submit">Login / Register</button>
+            <button type="button" onclick="logout()">Logout</button>
+            <p id="userMessage"></p>
+        </form>
+    </section>
+
+    <!-- FLIGHT BOOKING -->
+    <section class="card" id="flights">
+        <h2>✈ Flight Booking</h2>
+
+        <form id="flightForm">
+            <div class="form-grid">
+                <div>
+                    <label>From</label>
+                    <input id="flightFrom" placeholder="Departure city" required>
+                </div>
+
+                <div>
+                    <label>To</label>
+                    <input id="flightTo" placeholder="Destination city" required>
+                </div>
+
+                <div>
+                    <label>Travel Date</label>
+                    <input type="date" id="flightDate" required>
+                </div>
+
+                <div>
+                    <label>Passengers</label>
+                    <select id="passengers">
+                        <option value="1">1 Passenger</option>
+                        <option value="2">2 Passengers</option>
+                        <option value="3">3 Passengers</option>
+                        <option value="4">4 Passengers</option>
+                        <option value="5">5 Passengers</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit">Search Flights</button>
+        </form>
+
+        <div id="flightResults"></div>
+    </section>
+
+    <!-- HOTEL BOOKING -->
+    <section class="card" id="hotels">
+        <h2>🏨 Hotel Booking</h2>
+
+        <form id="hotelForm">
+            <div class="form-grid">
+                <div>
+                    <label>Destination</label>
+                    <input id="hotelCity" placeholder="Enter city" required>
+                </div>
+
+                <div>
+                    <label>Check-in</label>
+                    <input type="date" id="checkin" required>
+                </div>
+
+                <div>
+                    <label>Check-out</label>
+                    <input type="date" id="checkout" required>
+                </div>
+
+                <div>
+                    <label>Guests</label>
+                    <select id="guests">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit">Search Hotels</button>
+        </form>
+
+        <div id="hotelResults"></div>
+    </section>
+
+    <!-- CAB BOOKING -->
+    <section class="card" id="cabs">
+        <h2>🚕 Cab Booking</h2>
+
+        <form id="cabForm">
+            <div class="form-grid">
+                <div>
+                    <label>Pickup Location</label>
+                    <input id="pickup" placeholder="Pickup location" required>
+                </div>
+
+                <div>
+                    <label>Drop Location</label>
+                    <input id="drop" placeholder="Drop location" required>
+                </div>
+
+                <div>
+                    <label>Cab Type</label>
+                    <select id="cabType">
+                        <option value="Mini">Mini</option>
+                        <option value="Sedan">Sedan</option>
+                        <option value="SUV">SUV</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit">Search Cabs</button>
+        </form>
+
+        <div id="cabResults"></div>
+    </section>
+
+    <!-- ITINERARY -->
+    <section class="card" id="itinerary">
+        <h2>🧳 My Trips / Itinerary</h2>
+        <p>View all your bookings and manage your travel plans.</p>
+        <div id="tripList">
+            <p>No bookings yet.</p>
+        </div>
+
+        <button onclick="clearTrips()">Clear My Trips</button>
+    </section>
+
+    <!-- PAYMENT -->
+    <section class="card" id="payment">
+        <h2>💳 Payment</h2>
+        <p id="paymentMessage">
+            Select a flight, hotel or cab to begin a booking.
+        </p>
+        <p><strong>Demo only:</strong> No real payment will be collected.</p>
+    </section>
+
+</div>
+
+<footer>
+    <p>© 2026 TravelGo Travel Booking Platform</p>
+    <p>Explore More. Travel Better.</p>
+</footer>
+
+<script>
+    let trips = [];
+
+    function showResults(elementId, title, details, price, type) {
+        const container = document.getElementById(elementId);
+
+        container.innerHTML = `
+            <div class="result">
+                <h3>${title}</h3>
+                <p>${details}</p>
+                <p><strong>Estimated Price: ₹${price}</strong></p>
+                <button onclick="bookTrip(
+                    '${type}',
+                    '${title.replace(/'/g, "\\'")}',
+                    ${price}
+                )">Book Now</button>
+            </div>
+        `;
+    }
+
+    // LOGIN / REGISTER DEMO
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const name = document.getElementById("username").value.trim();
+        document.getElementById("userMessage").textContent =
+            "Welcome, " + name + "! Demo login successful.";
+    });
+
+    function logout() {
+        document.getElementById("userMessage").textContent =
+            "You have logged out of the demo.";
+    }
+
+    // FLIGHT SEARCH
+    document.getElementById("flightForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const from = document.getElementById("flightFrom").value.trim();
+        const to = document.getElementById("flightTo").value.trim();
+        const date = document.getElementById("flightDate").value;
+        const passengers = document.getElementById("passengers").value;
+
+        if (from.toLowerCase() === to.toLowerCase()) {
+            alert("Departure and destination must be different.");
+            return;
+        }
+
+        const price = 3500 * Number(passengers);
+
+        showResults(
+            "flightResults",
+            "Demo Flight: " + from + " to " + to,
+            "Date: " + date + " | Passengers: " + passengers,
+            price,
+            "Flight"
+        );
+    });
+
+    // HOTEL SEARCH
+    document.getElementById("hotelForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const city = document.getElementById("hotelCity").value.trim();
+        const checkin = document.getElementById("checkin").value;
+        const checkout = document.getElementById("checkout").value;
+        const guests = Number(document.getElementById("guests").value);
+
+        const start = new Date(checkin + "T00:00:00");
+        const end = new Date(checkout + "T00:00:00");
+        const nights = (end - start) / (1000 * 60 * 60 * 24);
+
+        if (nights <= 0) {
+            alert("Check-out must be after check-in.");
+            return;
+        }
+
+        const price = nights * 2000;
+
+        showResults(
+            "hotelResults",
+            "Demo Hotel in " + city,
+            checkin + " to " + checkout + " | " +
+            nights + " nights | Guests: " + guests,
+            price,
+            "Hotel"
+        );
+    });
+
+    // CAB SEARCH
+    document.getElementById("cabForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const pickup = document.getElementById("pickup").value.trim();
+        const drop = document.getElementById("drop").value.trim();
+        const type = document.getElementById("cabType").value;
+
+        const prices = {
+            Mini: 500,
+            Sedan: 800,
+            SUV: 1200
+        };
+
+        showResults(
+            "cabResults",
+            type + " Cab",
+            "Pickup: " + pickup + " | Drop: " + drop,
+            prices[type],
+            "Cab"
+        );
+    });
+
+    // BOOKING
+    function bookTrip(type, title, price) {
+        const booking = {
+            type: type,
+            title: title,
+            price: price,
+            id: Date.now()
+        };
+
+        trips.push(booking);
+        renderTrips();
+
+        document.getElementById("paymentMessage").textContent =
+            type + " booking selected. Estimated amount: ₹" +
+            price + ". Demo booking confirmed; no payment was taken.";
+
+        alert(type + " demo booking confirmed!");
+    }
+
+    // DISPLAY ITINERARY
+    function renderTrips() {
+        const list = document.getElementById("tripList");
+
+        if (trips.length === 0) {
+            list.innerHTML = "<p>No bookings yet.</p>";
+            return;
+        }
+
+        list.innerHTML = trips.map(trip => `
+            <div class="result">
+                <h3>${trip.type}: ${trip.title}</h3>
+                <p>Estimated Price: ₹${trip.price}</p>
+                <button onclick="cancelTrip(${trip.id})">
+                    Cancel Booking
+                </button>
+            </div>
+        `).join("");
+    }
+
+    // CANCEL BOOKING
+    function cancelTrip(id) {
+        trips = trips.filter(trip => trip.id !== id);
+        renderTrips();
+
+        document.getElementById("paymentMessage").textContent =
+            "Selected demo booking has been cancelled.";
+    }
+
+    // CLEAR ALL TRIPS
+    function clearTrips() {
+        if (confirm("Do you want to clear all demo bookings?")) {
+            trips = [];
+            renderTrips();
+
+            document.getElementById("paymentMessage").textContent =
+                "All demo bookings have been cleared.";
+        }
+    }
+</script>
+
+</body>
+</html>
